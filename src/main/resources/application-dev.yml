@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: Hope
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://175.178.25.118:5432/hope
+    username: postgres
+    password: 7307913.5t5t
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 30000
+      max-lifetime: 60000
+      connection-timeout: 30000
+      pool-name: Hope
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+server:
+  port: 80
+  shutdown: graceful
