@@ -16,11 +16,13 @@ public class WebDriverService {
     public ChromeOptions chromeOptions() {
         ChromeOptions options = new ChromeOptions();
         // 启用无头模式
-        options.addArguments("--window-size=1280x720");
-        options.addArguments("--headless=new"); // 无头模式
-        options.addArguments("--no-sandbox");
+        options.addArguments("--window-size=1280x720"); // 设置浏览器窗口大小
+//        options.addArguments("--headless"); // 无头模式
+        options.addArguments("--no-sandbox"); // 无沙盒模式
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
+//        options.addArguments("--disable-gpu"); //禁用GPU
+        options.addArguments("--enable-automation"); // 启用自动化
+        options.addArguments("--disable-notifications"); // 禁用通知
 
         // 设置自定义 User-Agent 和其他指纹伪造配置
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
