@@ -13,7 +13,7 @@ class HopeApplicationTests {
 	IChromeService chromeService;
 
 	@Test
-	void contextLoads() {
+	void contextLoads() throws InterruptedException {
 		chromeService.start();
 	}
 

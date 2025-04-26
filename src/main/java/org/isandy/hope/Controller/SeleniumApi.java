@@ -12,7 +12,7 @@ public class SeleniumApi {
     private final IChromeService chromeService;
 
     @GetMapping("/selenium")
-    public void start() {
+    public void start() throws InterruptedException {
         chromeService.start();
     }
 }
