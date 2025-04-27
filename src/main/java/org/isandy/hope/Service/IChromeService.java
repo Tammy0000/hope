@@ -1,8 +1,7 @@
 package org.isandy.hope.Service;
 
-import org.springframework.scheduling.annotation.Async;
+import java.net.MalformedURLException;
 
 public interface IChromeService {
-    @Async
-    default void start() throws InterruptedException {}
+    default void start() throws InterruptedException, MalformedURLException {}
 }
