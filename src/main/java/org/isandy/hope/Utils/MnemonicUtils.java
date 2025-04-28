@@ -30,10 +30,16 @@ public class MnemonicUtils {
 
         // 将生成的助记词转为字符串，单词之间用空格分隔
         StringBuilder mnemonic = new StringBuilder();
+        var index = 0;
         for (String word : mnemonicWords) {
-            mnemonic.append(word).append(" ");
+            index ++;
+            if (index == 12) {
+                mnemonic.append(word);
+            }
+            if (index < 12) {
+                mnemonic.append(word).append("-");
+            }
         }
-
         return mnemonic.toString().trim();
     }
 }
