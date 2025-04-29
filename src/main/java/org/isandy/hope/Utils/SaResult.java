@@ -85,19 +85,6 @@ public class SaResult extends LinkedHashMap<String, Object> implements Serializa
         return this;
     }
 
-    public SaResult removeNonDefaultFields() {
-        Iterator var1 = this.keySet().iterator();
-
-        while(var1.hasNext()) {
-            String key = (String)var1.next();
-            if (!"code".equals(key) && !"msg".equals(key) && !"data".equals(key)) {
-                this.remove(key);
-            }
-        }
-
-        return this;
-    }
-
     public static SaResult ok() {
         return new SaResult(200, "ok", (Object)null);
     }

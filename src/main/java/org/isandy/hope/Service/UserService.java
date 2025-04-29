@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements AuthUser{
     @Override
-    public int register(String username, String rawpassword, String phone) {
-        return AuthUser.super.register(username, rawpassword, phone);
+    public int register(String username, String rawPassword, String phone) {
+        return AuthUser.super.register(username, rawPassword, phone);
     }
 
     @Override
