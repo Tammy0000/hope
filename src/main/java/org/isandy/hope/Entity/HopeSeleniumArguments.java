@@ -5,23 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Table(name = "hope_selenium_config_arguments_value")
 @Entity
+@Table(name = "hope_selenium_config_arguments")
 @Getter
 @Setter
 @Accessors(chain = true)
-public class SeleniumArgumentsValue {
+public class HopeSeleniumArguments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "argument_id")
-    private Long argumentID;
+    private String argumentID;
 
-    @Column(name = "argument_value_id")
-    private Long argumentValueID;
-
-    @Column(name = "argument_value", columnDefinition = "TEXT")
+    @Column(name = "argument_name", columnDefinition = "TEXT")
     private String value;
 
     @Column(name = "argument_description")

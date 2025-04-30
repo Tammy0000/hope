@@ -1,7 +1,8 @@
-package org.isandy.hope.Service;
+package org.isandy.hope.Service.User;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.isandy.hope.Service.AuthUser;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class UserService implements AuthUser{
+public class UserService implements AuthUser {
     @Override
     public int register(String username, String rawPassword, String phone) {
         return AuthUser.super.register(username, rawPassword, phone);

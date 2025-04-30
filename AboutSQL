@@ -1,0 +1,17 @@
+2025年4月30日14:56:26
+关于表说明如下:
+项目账户：该账户主要是空投网站的账户
+关联账户：主要是项目账户关注，点赞，以及刷积分用的，关联账户可以有多个
+以下是表解释：
+HopeUser 用于存储用户基本信息
+HopeProject 项目基本信息，以及关联到用户ID
+HopeUserProject 对用户以及项目进行关联
+HopeProjectAccount 用于对项目下的账户进行划分，也就是对项目账户进行管理
+HopeProjectLinkAccount 关联账户的基本信息，空投项目需要推特，等其他关注，或者说是其他网站
+关注才可以领取积分，所以推特这些这里统称关联账户。
+HopeProjectLinkAccountBind 这里主要用户绑定到项目上去，不同的空投项目可能都需要空投
+HopeProjectLinkAccountType 创建多个关联账户的名称以及使用
+HopeProjectCashFlow 项目收支流水情况
+HopeProjectShareRatio 项目比例分配情况
+HopeProjectAccountLog 项目日志情况
+

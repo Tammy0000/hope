@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class SeleniumUserAgent {
+public class HopeSeleniumUserAgent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
