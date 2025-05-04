@@ -1,13 +1,13 @@
 package org.isandy.hope;
 
 import org.isandy.hope.Dao.MnemonicRepository;
-import org.isandy.hope.Entity.HopeUserSecurityMnemonic;
-import org.isandy.hope.Utils.MnemonicUtils;
+import org.isandy.hope.Service.ProjectService;
+import org.isandy.hope.Service.SeleniumService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
+import java.awt.*;
 
 @SpringBootTest
 class HopeApplicationTests {
@@ -15,17 +15,15 @@ class HopeApplicationTests {
 	@Autowired
 	MnemonicRepository mnemonicRepository;
 
+	@Autowired
+	ProjectService projectService;
+
+	@Autowired
+	SeleniumService seleniumService;
+
 	@Test
-	void contextLoads() {
-		for (int i = 0; i < 20; i++) {
-			HopeUserSecurityMnemonic hopeUserSecurityMnemonic = new HopeUserSecurityMnemonic();
-			hopeUserSecurityMnemonic.setMnemonic(MnemonicUtils.generateMnemonic())
-					.setDescription("测试")
-					.setIsUsed(false)
-					.setCreateTime(LocalDateTime.now())
-					.setCreateUser("admin");
-			mnemonicRepository.save(hopeUserSecurityMnemonic);
-		}
+	void contextLoads() throws InterruptedException, AWTException {
+		seleniumService.updateTwitterPassword(1L);
 	}
 
 }
