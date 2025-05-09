@@ -22,7 +22,7 @@ import java.awt.*;
 public class TestController {
     private final SeleniumService seleniumService;
     @GetMapping("/test")
-    public SaResult test() throws InterruptedException, AWTException {
+    public SaResult test() throws Exception {
         seleniumService.updateTwitterPassword(1L);
         return SaResult.ok();
     }
