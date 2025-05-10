@@ -6,6 +6,8 @@ import com.alibaba.fastjson2.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.isandy.hope.Service.AuthUser;
+import org.isandy.hope.Utils.FieldValidator;
+import org.isandy.hope.Utils.JsonBodyExtractor;
 import org.isandy.hope.Utils.JwtUtils;
 import org.isandy.hope.Utils.SaResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,16 +27,15 @@ public class UserController {
 
     @PostMapping("/user/register")
     public SaResult register(@RequestBody String data) {
-        String username;
-        String password;
-        String phone;
-        try {
-            JSONObject parsed = JSON.parseObject(data);
-            username = parsed.getString("username");
-            password = parsed.getString("password");
-            phone = parsed.getString("phone");
-        } catch (Exception e) {
-            return SaResult.error("参数错误");
+        String username = JsonBodyExtractor.extract(data, "username", String.class);
+        String password = JsonBodyExtractor.extract(data, "password", String.class);
+        String phone = JsonBodyExtractor.extract(data, "phone", String.class);
+        FieldValidator validator = FieldValidator.create()
+                .notEmpty(username, "username", "用户名不能为空")
+                .notEmpty(password, "password", "密码不能为空")
+                .notEmpty(phone, "phone", "手机号不能为空");
+        if (validator.hasErrors()) {
+            return SaResult.error(validator.firstErrorMessage());
         }
         int result = authUser.register(username, password, phone);
         var msg = switch (result) {
