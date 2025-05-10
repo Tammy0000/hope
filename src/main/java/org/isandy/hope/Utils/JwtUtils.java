@@ -1,12 +1,14 @@
 package org.isandy.hope.Utils;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -14,77 +16,77 @@ import java.util.Date;
  * @date 2025/4/28 下午4:22
  */
 public class JwtUtils {
-    // 密钥 (实际项目中应使用更复杂的密钥并保密)
-    private static final String SECRET_KEY = "mySecretKey";
+    // 签名密钥（建议替换为配置文件读取，增强安全性）
+    private static final String SECRET = "YR45Ec7pecLnDhqeWphT";
 
-    // 默认的 JWT有效期: 1小时
-    private static final long DEFAULT_EXPIRATION_TIME = 60 * 60 * 1000; // 1小时
+    // 使用 HMAC256 算法进行签名
+    private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET);
+
+    // 自定义的用户名字段名
+    private static final String CLAIM_USERNAME = "hopeProject";
 
     /**
-     * 1. 生成JWT并返回Token字符串
+     * 生成一个默认有效期为 30 天的 Token
      *
-     * @param username 用户名或用户ID
-     * @param expirationTime 有效期，单位：秒。如果为0或小于等于0，则使用默认有效期（1小时）
-     * @return JWT Token
+     * @param username 要嵌入 token 的用户名
+     * @return 生成的 JWT 字符串
      */
-    public static String generateToken(String username, long expirationTime) {
-        if (expirationTime <= 0) {
-            expirationTime = DEFAULT_EXPIRATION_TIME / 1000;  // 如果传入有效期为0或负数，使用默认1小时
-        }
+    public static String generateToken(String username) {
+        return generateToken(username, 30);
+    }
 
-        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);  // 使用 HMAC256 算法
+    /**
+     * 生成指定有效天数的 Token
+     *
+     * @param username  要嵌入 token 的用户名
+     * @param daysValid 有效期（以天为单位）
+     * @return 生成的 JWT 字符串
+     */
+    public static String generateToken(String username, int daysValid) {
+        Instant now = Instant.now(); // 当前时间
+        Instant expiresAt = now.plusSeconds(daysValid * 86400L); // 过期时间 = 当前时间 + N 天
 
         return JWT.create()
-                .withSubject(username)  // 设置主体，通常是用户名或者用户ID
-                .withIssuedAt(new Date())  // 设置签发时间
-                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime * 1000))  // 设置过期时间
-                .sign(algorithm);  // 使用指定的算法签名
+                .withClaim(CLAIM_USERNAME, username)   // 添加用户名声明
+                .withIssuedAt(Date.from(now))          // 签发时间
+                .withExpiresAt(Date.from(expiresAt))   // 过期时间
+                .sign(ALGORITHM);                      // 使用签名算法生成 Token
     }
 
     /**
-     * 2. 校验Token是否有效
+     * 从 Token 中提取用户名
      *
-     * @param token JWT Token
-     * @return 如果有效则返回true，否则返回false
+     * @param token 待解析的 JWT 字符串
+     * @return 如果 token 有效，返回用户名；无效或过期返回 null
      */
-    public static boolean validateToken(String token) {
+    public static String extractUsername(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-            JWT.require(algorithm)
-                    .build()
-                    .verify(token);  // 验证JWT Token
-            return true;
-        } catch (TokenExpiredException e) {
-            // Token过期
-            System.out.println("Token is expired");
-        } catch (JWTVerificationException | IllegalArgumentException e) {
-            // Token无效
-            System.out.println("Invalid token");
+            JWTVerifier verifier = JWT.require(ALGORITHM).build();
+            DecodedJWT decoded = verifier.verify(token); // 验证并解析 Token
+            return decoded.getClaim(CLAIM_USERNAME).asString(); // 获取用户名
+        } catch (JWTVerificationException e) {
+            // 无效 Token 或已过期
+            return null;
         }
-        return false;
     }
 
     /**
-     * 3. 获取Token的有效日期，并返回LocalDateTime格式
+     * 提取 Token 的过期时间
      *
-     * @param token JWT Token
-     * @return Token的过期时间（LocalDateTime格式）
+     * @param token 待解析的 JWT 字符串
+     * @return 如果 token 有效，返回 LocalDateTime 类型的过期时间；无效返回 null
      */
-    public static LocalDateTime getExpirationDate(String token) {
+    public static LocalDateTime extractExpiration(String token) {
         try {
-            // 解码Token获取过期时间
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-            Date expirationDate = JWT.require(algorithm)
-                    .build()
-                    .verify(token)
-                    .getExpiresAt();  // 获取Token的过期时间
-
-            if (expirationDate != null) {
-                // 转换为 LocalDateTime
-                return expirationDate.toInstant().atOffset(ZoneOffset.UTC).toLocalDateTime();
+            JWTVerifier verifier = JWT.require(ALGORITHM).build();
+            DecodedJWT decoded = verifier.verify(token); // 验证并解析 Token
+            Date expires = decoded.getExpiresAt(); // 获取过期时间
+            if (expires != null) {
+                return LocalDateTime.ofInstant(expires.toInstant(), ZoneId.systemDefault());
             }
-        } catch (JWTVerificationException | IllegalArgumentException e) {
-            System.out.println("Error while getting expiration date");
+        } catch (JWTVerificationException e) {
+            // 无效 Token 或已过期
+            return null;
         }
         return null;
     }

@@ -12,7 +12,7 @@ public interface AuthUser {
      * @param phone 手机号
      * @param phone 手机号
      * @return 注册结果
-     * @description: 0 注册成功，-1 注册失败,手机号已存在
+     * @description: 0 注册成功，-1 手机号已存在，-2 用户名已经存在
      */
     // todo 注册
     default int register(String username, String password, String phone) {return 0;}
@@ -34,7 +34,7 @@ public interface AuthUser {
     default void logout(String phone) {}
 
     /**
-     * 修改密码
+     * @description: 修改密码
      * @param phone 手机号
      * @param oldPassword 旧密码
      * @param newPassword 新密码
@@ -42,4 +42,13 @@ public interface AuthUser {
      */
     //  todo 修改密码
     default int editPassword(String phone, String oldPassword, String newPassword) {return 0;}
+
+    /**
+     * @description: 修改手机号
+     * @param oldPhone 旧手机号
+     * @param newPhone 新手机号
+     * @param Password 密码
+     * @return 修改结果
+     */
+    default int editPhone(String oldPhone, String newPhone, String Password) {return 0;}
 }

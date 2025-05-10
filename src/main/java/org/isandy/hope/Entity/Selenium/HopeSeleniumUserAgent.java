@@ -1,4 +1,4 @@
-package org.isandy.hope.Entity;
+package org.isandy.hope.Entity.Selenium;
 
 import jakarta.persistence.*;
 import lombok.Getter;

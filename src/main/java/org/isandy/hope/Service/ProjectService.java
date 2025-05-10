@@ -1,6 +1,6 @@
 package org.isandy.hope.Service;
 
-import org.isandy.hope.Entity.HopeProjectTwitter;
+import org.isandy.hope.Entity.Project.HopeProjectTwitter;
 
 import java.util.List;
 

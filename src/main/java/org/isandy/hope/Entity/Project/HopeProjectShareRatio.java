@@ -1,55 +1,44 @@
-package org.isandy.hope.Entity;
+package org.isandy.hope.Entity.Project;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
  * @author Tammy
- * @date 2025/4/30 下午2:11
+ * @date 2025/4/30 下午2:04
  */
 @Entity
+@Table(name = "hope_project_share_ratio")
 @Getter
 @Setter
 @Accessors(chain = true)
-@Table(name = "hope_project_account")
-public class HopeProjectAccount {
+public class HopeProjectShareRatio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
-     * 所属项目ID
+     * 项目id
      */
     @Column(name = "project_id")
     private Long projectId;
 
     /**
-     * 所属用户ID
+     * 用户id
      */
     @Column(name = "user_id")
     private Long userId;
 
     /**
-     * 项目账号
+     * 分配比例
      */
-    @Column(name = "project_account")
-    private String projectAccount;
-
-    /**
-     * 密码
-     */
-    @Column(name = "password")
-    private String password;
-
-    /**
-     * 区块链助记词
-     */
-    @Column(name = "mnemonic")
-    private String mnemonic;
+    @Column(name = "share_ratio")
+    private int shareRatio;
 
     /**
      * 创建时间
@@ -68,4 +57,16 @@ public class HopeProjectAccount {
      */
     @Column(name = "update_time", columnDefinition = "timestamp(0)")
     private LocalDateTime updateTime;
+
+    /**
+     * 更新人
+     */
+    @Column(name = "update_user")
+    private String updateUser;
+
+    /**
+     * 公共支出
+     */
+    @Column(name = "public_expense")
+    private BigDecimal publicExpense;
 }

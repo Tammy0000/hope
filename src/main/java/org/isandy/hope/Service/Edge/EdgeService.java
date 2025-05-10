@@ -4,7 +4,7 @@ package org.isandy.hope.Service.Edge;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.isandy.hope.Dao.HopeProjectTwitterRepository;
-import org.isandy.hope.Entity.HopeProjectTwitter;
+import org.isandy.hope.Entity.Project.HopeProjectTwitter;
 import org.isandy.hope.Service.ProjectService;
 import org.isandy.hope.Service.SeleniumService;
 import org.isandy.hope.Utils.*;
@@ -20,14 +20,10 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.util.List;
 

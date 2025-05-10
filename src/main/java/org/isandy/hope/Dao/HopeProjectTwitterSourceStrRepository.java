@@ -1,6 +1,6 @@
 package org.isandy.hope.Dao;
 
-import org.isandy.hope.Entity.HopeProjectTwitterSourceStr;
+import org.isandy.hope.Entity.Project.HopeProjectTwitterSourceStr;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

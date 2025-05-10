@@ -1,7 +1,6 @@
 package org.isandy.hope.Utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.isandy.hope.Entity.HopeProjectTwitter;
 
 /**
  * TwitterUtils

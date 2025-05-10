@@ -1,41 +1,39 @@
-package org.isandy.hope.Entity;
+package org.isandy.hope.Entity.Project;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Tammy
- * @date 2025/4/30 下午3:27
+ * @date 2025/4/30 下午2:25
  */
-@Entity
-@Table(name = "hope_project_link_account_bind")
 @Getter
 @Setter
 @Accessors(chain = true)
-public class HopeProjectLinkAccountBind {
+@Entity
+@Table(name = "hope_project_account_link")
+public class HopeProjectAccountLink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
-     * 项目ID
+     * 关联的项目ID
      */
     @Column(name = "project_id")
-    private Long projectID;
+    private Long projectId;
 
     /**
-     * 关联账号
+     * 项目账号
      */
     @Column(name = "project_account_link")
     private String projectAccountLink;
 
     /**
-     * 绑定时间
+     * 关联账号
      */
-    @Column(name = "bind_time", columnDefinition = "timestamp(0)")
-    private LocalDateTime bindTime;
+    @Column(name = "project_account_link_type")
+    private Long projectAccountLinkType;
 }

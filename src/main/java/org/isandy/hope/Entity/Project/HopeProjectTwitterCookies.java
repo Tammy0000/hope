@@ -1,4 +1,4 @@
-package org.isandy.hope.Entity;
+package org.isandy.hope.Entity.Project;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,31 +7,27 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
-/**
- * @author Tammy
- * @date 2025/4/30 上午11:18
- */
-@Table(name = "hope_user_project")
+@Table(name = "hope_project_twitter_cookies")
+@Entity
 @Getter
 @Setter
-@Entity
 @Accessors(chain = true)
-public class HopeUserProject {
+public class HopeProjectTwitterCookies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
-     * 用户ID
+     * 推特账号
      */
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "twitter_account")
+    private String twitterAccount;
 
     /**
-     * 项目ID
+     * 推特cookies
      */
-    @Column(name = "project_id")
-    private Long projectId;
+    @Column(name = "twitter_cookies", columnDefinition = "TEXT")
+    private String twitterCookies;
 
     /**
      * 创建时间

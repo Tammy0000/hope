@@ -1,4 +1,4 @@
-package org.isandy.hope.Entity;
+package org.isandy.hope.Entity.User;
 
 import jakarta.persistence.*;
 import lombok.Getter;
