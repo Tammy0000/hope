@@ -7,6 +7,7 @@ import org.isandy.hope.Entity.Auth.HopeAuthPath;
 import org.isandy.hope.Service.AuthUser;
 import org.isandy.hope.Service.ProjectService;
 import org.isandy.hope.Service.SeleniumService;
+import org.isandy.hope.Service.TwitterSeleniumService;
 import org.isandy.hope.Utils.JwtUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +31,12 @@ class HopeApplicationTests {
 	AuthUser authUser;
 
 	@Autowired
-	HopeAuthPathRepository hopeAuthPathRepository;
+	TwitterSeleniumService twitterSeleniumService;
 
 	@Test
-	void contextLoads() {
-		String url = "/user/test/test";
-		List<HopeAuthPath> byIsAuth = hopeAuthPathRepository.findByAuth(false);
-		for (HopeAuthPath path : byIsAuth) {
-			String noAuthPath = path.getPath();
-			String substring = noAuthPath.substring(0, noAuthPath.length() - 2);
-			if (url.startsWith(substring)) {
-				System.out.println(noAuthPath);
-				System.out.println(substring);
-			}
-		}
+	void contextLoads() throws InterruptedException {
+		twitterSeleniumService.TestLoad();
+//		twitterSeleniumService.launchTwitter();
 	}
 
 }

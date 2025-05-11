@@ -2,7 +2,9 @@ package org.isandy.hope.Utils;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JsonBodyExtractor {
     /**
      * 提取 JSON body 中的关键词字段，并反序列化为指定类型
@@ -20,7 +22,7 @@ public class JsonBodyExtractor {
                 return json.getObject(keyword, targetClass);
             }
         } catch (Exception e) {
-            System.err.println("解析 JSON 出错: " + e.getMessage());
+            log.error("解析 JSON 出错:{}", e.getMessage());
         }
         return null;
     }
