@@ -13,4 +13,6 @@ public interface SeleniumService {
      * 批量修改推特密码以及2fa密码
      */
     default void updateTwitterPassword(Long UserId) throws Exception {}
+
+    default void TestAdsBrowser() throws InterruptedException {}
 }

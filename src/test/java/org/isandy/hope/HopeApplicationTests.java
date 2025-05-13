@@ -35,8 +35,7 @@ class HopeApplicationTests {
 
 	@Test
 	void contextLoads() throws InterruptedException {
-		twitterSeleniumService.TestLoad();
-//		twitterSeleniumService.launchTwitter();
+		seleniumService.TestAdsBrowser();
 	}
 
 }

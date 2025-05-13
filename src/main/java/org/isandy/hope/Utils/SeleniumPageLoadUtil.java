@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 public class SeleniumPageLoadUtil {
-    private static final int DEFAULT_TIMEOUT = 30;
+    private static final int DEFAULT_TIMEOUT = 60;
 
     public static void waitForPageLoad(WebDriver driver) {
         waitForPageLoad(driver, DEFAULT_TIMEOUT);
