@@ -1,19 +1,10 @@
 package org.isandy.hope;
 
-import org.isandy.hope.Dao.HopeAuthPathRepository;
-import org.isandy.hope.Dao.HopeUserStatusRepository;
 import org.isandy.hope.Dao.MnemonicRepository;
-import org.isandy.hope.Entity.Auth.HopeAuthPath;
-import org.isandy.hope.Service.AuthUser;
-import org.isandy.hope.Service.ProjectService;
-import org.isandy.hope.Service.SeleniumService;
-import org.isandy.hope.Service.TwitterSeleniumService;
-import org.isandy.hope.Utils.JwtUtils;
+import org.isandy.hope.Service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 class HopeApplicationTests {
@@ -33,9 +24,13 @@ class HopeApplicationTests {
 	@Autowired
 	TwitterSeleniumService twitterSeleniumService;
 
+	@Autowired
+	VirtualBrowser virtualBrowser;
+
 	@Test
-	void contextLoads() throws InterruptedException {
-		seleniumService.TestAdsBrowser();
+	void contextLoads() {
+//		seleniumService.TestAdsBrowser();
+		System.out.println(virtualBrowser.launchBrowser(10));
 	}
 
 }

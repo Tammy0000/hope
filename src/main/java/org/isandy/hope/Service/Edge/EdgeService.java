@@ -1,6 +1,7 @@
 package org.isandy.hope.Service.Edge;
 
 
+import cn.hutool.http.HttpRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.isandy.hope.Dao.HopeProjectTwitterRepository;
@@ -138,8 +139,8 @@ public class EdgeService implements SeleniumService {
         driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input")).sendKeys(first.getTwitterSourcePassword());
         Thread.sleep(2*1000);
         driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/button")).click();
-        HttpResponse<String> response = HttpUtils.get("https://2fa.fb.rip/api/otp/" + first.getTwitterSource2faPassword());
-        String otp = Extractor2FA.extractOtp(response.body());
+        String res = HttpRequest.get("https://2fa.fb.rip/api/otp/" + first.getTwitterSource2faPassword()).execute().body();
+        String otp = Extractor2FA.extractOtp(res);
         driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[2]/label/div/div[2]/div/input")).sendKeys(otp);
         Thread.sleep(2*1000);
         driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div/div/button")).click();
@@ -147,32 +148,13 @@ public class EdgeService implements SeleniumService {
     }
 
     @Override
-    public void TestAdsBrowser() throws InterruptedException {
+    public void TestAdsBrowser() {
         ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("debuggerAddress", "127.0.0.1:60623");
-        options.setBinary("C:/Users/isandy/AppData/Roaming/adspower_global/cwd_global/chrome_134/chromedriver.exe");
+        options.setExperimentalOption("debuggerAddress", "127.0.0.1:55088");
+        options.setBinary("C:/Program Files/VirtualBrowser/VirtualBrowser/132.0.6834.99/VirtualBrowser.exe");
         ChromeDriver driver = new ChromeDriver(options);
         driver.get("https://x.com/?logout=1747143776809");
 
-        SeleniumPageLoadUtil.waitForPageLoad(driver);
-        driver.findElement(By.xpath("//*[@id=\"react-root\"]/div/div/div[2]/main/div/div/div[1]/div[1]/div/div[3]/div[4]/a")).click();
-        Thread.sleep(3*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[4]/label/div/div[2]/div/input")).sendKeys("rafa_lopes_123");
-        Thread.sleep(3*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/button[2]/div")).click();
-        Thread.sleep(3*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input")).sendKeys("G27KzS3Rux");
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/button")).click();
-        SeleniumPageLoadUtil.waitForPageLoad(driver);
 
-        Set<Cookie> cookies = driver.manage().getCookies();
-        for (Cookie cookie : cookies) {
-            log.info(cookie.getDomain());
-            log.info(cookie.getName());
-            log.info(cookie.getValue());
-            log.info(String.valueOf(cookie.getExpiry()));
-            log.info(cookie.getSameSite());
-        }
     }
 }
