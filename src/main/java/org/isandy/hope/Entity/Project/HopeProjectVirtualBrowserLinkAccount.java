@@ -33,7 +33,15 @@ public class HopeProjectVirtualBrowserLinkAccount {
     @Column(name = "create_time", columnDefinition = "timestamp(0)")
     private LocalDateTime createTime;
 
+    //账号持有人
+    @Column(name = "user_id")
+    private Long userId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "browser_id")
     private HopeProjectVirtualBrowser hopeProjectVirtualBrowser;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_id")
+    private HopeProjectAccountType hopeProjectAccountType;
 }
