@@ -27,5 +27,5 @@ server:
   port: 80
   shutdown: graceful
 vBrowser:
-  host: 127.0.0.1
+  host: 10.0.0.3
   port: 9000

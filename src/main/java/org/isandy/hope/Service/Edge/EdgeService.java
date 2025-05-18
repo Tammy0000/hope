@@ -149,9 +149,7 @@ public class EdgeService implements SeleniumService {
 
     @Override
     public void TestAdsBrowser() {
-        ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("debuggerAddress", "127.0.0.1:55088");
-        options.setBinary("C:/Program Files/VirtualBrowser/VirtualBrowser/132.0.6834.99/VirtualBrowser.exe");
+        ChromeOptions options = ChromeLauncher.createChromeOptions(9222);
         ChromeDriver driver = new ChromeDriver(options);
         driver.get("https://x.com/?logout=1747143776809");
 

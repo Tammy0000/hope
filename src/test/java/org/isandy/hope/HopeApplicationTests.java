@@ -5,8 +5,11 @@ import org.isandy.hope.Dao.HopeProjectVirtualBrowserRepository;
 import org.isandy.hope.Dao.MnemonicRepository;
 import org.isandy.hope.Entity.Project.HopeProjectVirtualBrowserLinkAccount;
 import org.isandy.hope.Service.*;
+import org.isandy.hope.Utils.ChromeLauncher;
 import org.isandy.hope.Utils.IpUtil;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -28,9 +31,6 @@ class HopeApplicationTests {
 	AuthUser authUser;
 
 	@Autowired
-	TwitterSeleniumService twitterSeleniumService;
-
-	@Autowired
 	VirtualBrowser virtualBrowser;
 
 	@Autowired
@@ -41,7 +41,7 @@ class HopeApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println(IpUtil.getLocalLanIp());
+		System.out.println(virtualBrowser.launchBrowser(123456L, "tw"));
 	}
 
 }

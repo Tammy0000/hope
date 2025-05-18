@@ -45,8 +45,8 @@ public class HopeProjectVirtualBrowserLinkAccount {
     @Column(name = "user_id")
     private Long userId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "vb_id")
-    private HopeProjectVirtualBrowser hopeProjectVirtualBrowser;
+    //虚拟浏览器序号ID
+    @Column(name = "virtual_browser_index_id")
+    private Long virtualBrowserIndexId;
 
 }

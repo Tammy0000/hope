@@ -1,5 +1,7 @@
 package org.isandy.hope.Utils;
 
+import org.openqa.selenium.chrome.ChromeOptions;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,6 +70,13 @@ public class ChromeLauncher {
         }
 
         System.out.println("✅ 内容已从 " + sourceDir.getAbsolutePath() + " 复制到 " + targetDir.getAbsolutePath());
+    }
+
+    public static ChromeOptions createChromeOptions(int port) {
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("debuggerAddress", "127.0.0.1:" + port);
+        options.setBinary("C:/Program Files/VirtualBrowser/VirtualBrowser/132.0.6834.99/VirtualBrowser.exe");
+        return options;
     }
 
     /**

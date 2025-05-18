@@ -118,4 +118,10 @@ public class HopeProjectTwitter {
      */
     @Column(name = "is_edit_password")
     private Boolean isEditPassword;
+
+    /**
+     * 是否需要2fa
+     */
+    @Column(name = "is_need_2fa")
+    private Boolean isNeed2fa;
 }

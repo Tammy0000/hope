@@ -5,9 +5,12 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.isandy.hope.Config.AppConfig;
+import org.isandy.hope.Dao.HopeProjectVBARepository;
 import org.isandy.hope.Dao.HopeProjectVirtualBrowserRepository;
 import org.isandy.hope.Entity.Project.HopeProjectVirtualBrowser;
+import org.isandy.hope.Entity.Project.HopeProjectVirtualBrowserLinkAccount;
 import org.isandy.hope.Service.HopeStorage;
 import org.isandy.hope.Service.VirtualBrowser;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 @Service
@@ -23,6 +27,8 @@ import java.util.Random;
 public class VirtualBrowserService implements VirtualBrowser {
 
     private final HopeProjectVirtualBrowserRepository hopeProjectVirtualBrowserRepository;
+
+    private final HopeProjectVBARepository hopeProjectVBARepository;
 
     private final AppConfig appConfig;
 
@@ -43,7 +49,7 @@ public class VirtualBrowserService implements VirtualBrowser {
     }
 
     @Override
-    public int addBrowser() {
+    public int addBrowser(Long UserId) {
         List<Integer> chromeVersion = List.of(124, 123, 122, 121, 125, 126, 130, 131, 121, 132, 120, 119, 118, 117, 116);
         Random random = new Random();
         JSONObject root = new JSONObject();
@@ -69,7 +75,7 @@ public class VirtualBrowserService implements VirtualBrowser {
     }
 
     @Override
-    public int launchBrowser(int id) {
+    public int launchBrowserId(int id) {
         String res = HttpRequest.post(appConfig.getVirtualBrowserURI() + "/api/launchBrowser")
                 .body(JSON.toJSONString(Map.of("id", id)))
                 .header("api-key", hopeStorage.getVirtualBrowserApiKey())
@@ -93,5 +99,36 @@ public class VirtualBrowserService implements VirtualBrowser {
                 .body(jsonObject.toJSONString())
                 .execute().body();
         return JSON.parseObject(res).getBoolean("success");
+    }
+
+    @Override
+    public int launchBrowser(Long UserId, String accountType) {
+        HopeProjectVirtualBrowser byUserId = hopeProjectVirtualBrowserRepository.findByUserIdAndBindHost(UserId, appConfig.getHost());
+        Long virtualBrowserId = byUserId.getVirtualBrowserId();
+        List<Long> tw = hopeProjectVBARepository.findVirtualBrowserIndexIdNotInAccountType(virtualBrowserId, accountType);
+        HopeProjectVirtualBrowserLinkAccount linkAccount = new HopeProjectVirtualBrowserLinkAccount();
+        if (!tw.isEmpty()) {
+            // 获取第一个浏览器索引ID来作为登录
+            Long indexId = tw.getFirst();
+            int i = Integer.parseInt(String.valueOf(indexId));
+            int port = launchBrowserId(i);
+            if (port == -1) return -1;
+            linkAccount.setVirtualBrowserIndexId(indexId)
+                    .setAccountType("tw")
+                    .setUserId(UserId)
+                    .setCreateTime(LocalDateTime.now())
+                    .setIsProjectAccount(false)
+                    .setVirtualBrowserId(byUserId.getVirtualBrowserId());
+            hopeProjectVBARepository.save(linkAccount);
+            return port;
+        }
+        int indexId = addBrowser(UserId);
+        linkAccount.setVirtualBrowserIndexId(Long.parseLong(String.valueOf(indexId)))
+                .setUserId(UserId)
+                .setCreateTime(LocalDateTime.now())
+                .setIsProjectAccount(false)
+                .setVirtualBrowserId(byUserId.getVirtualBrowserId());
+        hopeProjectVBARepository.save(linkAccount);
+        return launchBrowserId(indexId);
     }
 }

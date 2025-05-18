@@ -41,6 +41,6 @@ public class HopeProjectVirtualBrowser {
     @Column(name = "login_password")
     private String loginPassword;
 
-    @OneToMany(mappedBy = "hopeProjectVirtualBrowser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<HopeProjectVirtualBrowserLinkAccount> hopeProjectVirtualBrowserLinkAccounts;
+    @Column(name = "virtual_browser_id")
+    private Long virtualBrowserId;
 }

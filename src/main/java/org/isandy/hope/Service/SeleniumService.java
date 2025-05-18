@@ -14,5 +14,8 @@ public interface SeleniumService {
      */
     default void updateTwitterPassword(Long UserId) throws Exception {}
 
+
     default void TestAdsBrowser() throws InterruptedException {}
+
+    default void loginTwitter(Long UserId) {}
 }
