@@ -26,6 +26,6 @@ spring:
 server:
   port: 80
   shutdown: graceful
-virtualBrowser:
-  url: http://127.0.0.1:9000
-  api-key: baPN4i2ncckImkh7x8Uj6zyg3Qsd99On
+vBrowser:
+  host: 127.0.0.1
+  port: 9000

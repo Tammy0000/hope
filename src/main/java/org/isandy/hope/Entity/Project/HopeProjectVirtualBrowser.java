@@ -18,10 +18,6 @@ public class HopeProjectVirtualBrowser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //  关联的浏览器id
-    @Column(name = "browser_id")
-    private Long browserId;
-
     //  创建时间
     @Column(name = "create_time", columnDefinition = "timestamp(0)")
     LocalDateTime createTime;
@@ -30,13 +26,20 @@ public class HopeProjectVirtualBrowser {
     @Column(name = "user_id")
     private Long userId;
 
-    // 浏览器api-key
+    // 这里是指的是绑定的主机，具有唯一性
+    @Column(name = "bind_host")
+    private String bindHost;
+
     @Column(name = "api_key")
     private String apiKey;
 
-    // virtualBrowser 启动地址
-    @Column(name = "host")
-    private String host;
+    //VirtualBrowser的登录账号
+    @Column(name = "login_account")
+    private String loginAccount;
+
+    //VirtualBrowser的登录密码
+    @Column(name = "login_password")
+    private String loginPassword;
 
     @OneToMany(mappedBy = "hopeProjectVirtualBrowser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<HopeProjectVirtualBrowserLinkAccount> hopeProjectVirtualBrowserLinkAccounts;

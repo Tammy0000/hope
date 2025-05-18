@@ -17,9 +17,13 @@ public class HopeProjectVirtualBrowserLinkAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //关联账号类型
+    //关联账号类型 三件套分别是 tw,dc,tg 推特 dc 小飞机
     @Column(name = "account_type")
     private String accountType;
+
+    //virtual_browser_id 虚拟浏览器id
+    @Column(name = "virtual_browser_id")
+    private Long virtualBrowserId;
 
     //账号
     @Column(name = "account")
@@ -28,6 +32,10 @@ public class HopeProjectVirtualBrowserLinkAccount {
     //登录网站
     @Column(name = "login_url", columnDefinition = "TEXT")
     private String loginUrl;
+
+    // 是否是项目账号
+    @Column(name = "is_project_account")
+    private Boolean isProjectAccount;
 
     //关联时间
     @Column(name = "create_time", columnDefinition = "timestamp(0)")
@@ -38,10 +46,7 @@ public class HopeProjectVirtualBrowserLinkAccount {
     private Long userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "browser_id")
+    @JoinColumn(name = "vb_id")
     private HopeProjectVirtualBrowser hopeProjectVirtualBrowser;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "type_id")
-    private HopeProjectAccountType hopeProjectAccountType;
 }

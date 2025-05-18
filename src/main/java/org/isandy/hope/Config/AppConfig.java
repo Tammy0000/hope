@@ -10,11 +10,13 @@ public class AppConfig {
 
     private final Environment env;
 
-    public String getVirtualBrowserHost() {
-        return env.getProperty("virtualBrowser.url");
+    public String getVirtualBrowserURI() {
+        String host = env.getProperty("vBrowser.host");
+        String port = env.getProperty("vBrowser.port");
+        return "http://" + host + ":" + port;
     }
 
-    public String getVirtualBrowserApiKey() {
-        return env.getProperty("virtualBrowser.api-key");
+    public String getHost() {
+        return env.getProperty("vBrowser.host");
     }
 }

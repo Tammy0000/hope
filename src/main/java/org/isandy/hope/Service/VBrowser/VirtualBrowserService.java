@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.isandy.hope.Config.AppConfig;
 import org.isandy.hope.Dao.HopeProjectVirtualBrowserRepository;
 import org.isandy.hope.Entity.Project.HopeProjectVirtualBrowser;
+import org.isandy.hope.Service.HopeStorage;
 import org.isandy.hope.Service.VirtualBrowser;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,12 @@ public class VirtualBrowserService implements VirtualBrowser {
 
     private final AppConfig appConfig;
 
+    private final HopeStorage hopeStorage;
+
     @Override
     public String getBrowserList() {
-        var res = HttpRequest.get(appConfig.getVirtualBrowserHost() + "/api/getBrowserList")
-                .header("api-key", appConfig.getVirtualBrowserApiKey())
+        var res = HttpRequest.get(appConfig.getVirtualBrowserURI() + "/api/getBrowserList")
+                .header("api-key", hopeStorage.getVirtualBrowserApiKey())
                 .execute().body();
         JSONObject jsonObject = JSONObject.parseObject(res);
         Boolean success = jsonObject.getBoolean("success");
@@ -46,9 +49,9 @@ public class VirtualBrowserService implements VirtualBrowser {
         JSONObject root = new JSONObject();
         int anInt = random.nextInt(chromeVersion.size());
         root.put("chrome_version", chromeVersion.get(anInt));
-        String res = HttpRequest.post(appConfig.getVirtualBrowserHost() + "/api/addBrowser")
+        String res = HttpRequest.post(appConfig.getVirtualBrowserURI() + "/api/addBrowser")
                 .body(JSON.toJSONString(root))
-                .header("api-key", appConfig.getVirtualBrowserApiKey())
+                .header("api-key", hopeStorage.getVirtualBrowserApiKey())
                 .execute().body();
         JSONObject jsonObject = JSON.parseObject(res);
         Boolean success = jsonObject.getBoolean("success");
@@ -59,7 +62,7 @@ public class VirtualBrowserService implements VirtualBrowser {
         JSONObject dataId = jsonObject.getJSONObject("data");
         HopeProjectVirtualBrowser browser = new HopeProjectVirtualBrowser();
         browser
-                .setBrowserId(dataId.getLongValue("id"))
+//                .setBrowserId(dataId.getLongValue("id"))
                 .setCreateTime(LocalDateTime.now());
         hopeProjectVirtualBrowserRepository.save(browser);
         return dataId.getIntValue("id");
@@ -67,9 +70,9 @@ public class VirtualBrowserService implements VirtualBrowser {
 
     @Override
     public int launchBrowser(int id) {
-        String res = HttpRequest.post(appConfig.getVirtualBrowserHost() + "/api/launchBrowser")
+        String res = HttpRequest.post(appConfig.getVirtualBrowserURI() + "/api/launchBrowser")
                 .body(JSON.toJSONString(Map.of("id", id)))
-                .header("api-key", appConfig.getVirtualBrowserApiKey())
+                .header("api-key", hopeStorage.getVirtualBrowserApiKey())
                 .execute().body();
         JSONObject jsonObject = JSON.parseObject(res);
         Boolean success = jsonObject.getBoolean("success");
@@ -85,8 +88,8 @@ public class VirtualBrowserService implements VirtualBrowser {
     public boolean stopBrowser(int id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
-        var res = HttpRequest.post(appConfig.getVirtualBrowserHost() + "/api/stopBrowser")
-                .header("api-key", appConfig.getVirtualBrowserApiKey())
+        var res = HttpRequest.post(appConfig.getVirtualBrowserURI() + "/api/stopBrowser")
+                .header("api-key", hopeStorage.getVirtualBrowserApiKey())
                 .body(jsonObject.toJSONString())
                 .execute().body();
         return JSON.parseObject(res).getBoolean("success");
