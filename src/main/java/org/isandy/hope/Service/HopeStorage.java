@@ -11,9 +11,16 @@ public interface HopeStorage {
     default HopeProjectVirtualBrowser  getVirtualBrowser(Long userId) {return null;}
 
     /**
-     * @description 根据Host地址来获取虚拟浏览器APIKEY
+     * @description 基于本机IP来获取虚拟浏览器APIKEY
      * @return APIKEY
      */
-    //todo 根据Host地址来获取虚拟浏览器APIKEY
+    //todo 基于本机IP来获取虚拟浏览器APIKEY
     default String getVirtualBrowserApiKey() {return null;}
+
+    /**
+     * @description 基于本机IP虚拟浏览器实体类
+     * @return 虚拟浏览器实体类
+     */
+    //todo 获取基于本机IP虚拟浏览器实体类
+    default HopeProjectVirtualBrowser getVirtualBrowserByHost() {return null;}
 }

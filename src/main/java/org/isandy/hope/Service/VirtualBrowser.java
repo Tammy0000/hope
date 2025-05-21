@@ -9,10 +9,9 @@ public interface VirtualBrowser {
 
     /**
      * 添加浏览器
-     * @param data 创建浏览器数据
      * @return 添加成功返回 该浏览器id, 否则返回 0
      */
-    default int addBrowser(Long UserId) {return 0;}
+    default int addBrowser() {return 0;}
 
     /**
      * 启动浏览器

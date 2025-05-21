@@ -8,6 +8,7 @@ import org.isandy.hope.Dao.HopeProjectTwitterRepository;
 import org.isandy.hope.Entity.Project.HopeProjectTwitter;
 import org.isandy.hope.Service.ProjectService;
 import org.isandy.hope.Service.SeleniumService;
+import org.isandy.hope.Service.VirtualBrowser;
 import org.isandy.hope.Utils.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -42,6 +43,8 @@ public class EdgeService implements SeleniumService {
     private final ProjectService projectService;
 
     private final HopeProjectTwitterRepository hopeProjectTwitterRepository;
+
+    private final VirtualBrowser virtualBrowser;
 
     @Override
     @Async
@@ -148,11 +151,19 @@ public class EdgeService implements SeleniumService {
     }
 
     @Override
-    public void TestAdsBrowser() {
-        ChromeOptions options = ChromeLauncher.createChromeOptions(9222);
+    public void TestAdsBrowser() throws InterruptedException {
+        int port = virtualBrowser.launchBrowserId(1);
+        ChromeOptions options = ChromeLauncher.createChromeOptions(port);
         ChromeDriver driver = new ChromeDriver(options);
         driver.get("https://x.com/?logout=1747143776809");
-
-
+        Thread.sleep(5*1000);
+        driver.findElement(By.xpath("//span[text()='Sign in']")).click();
+        Thread.sleep(5*1000);
+        driver.findElement(By.xpath("//input[@name='text']")).sendKeys("zhangch_@hotmail.com");
+        Thread.sleep(5*1000);
+        driver.findElement(By.xpath("//button[.//span[text()='Next']]")).click();
+        Thread.sleep(5*1000);
+        driver.findElement(By.xpath("//input[@name='password']")).sendKeys("zhssadwx");
+        driver.findElement(By.xpath("//button[.//span[text()='Log in']]")).click();
     }
 }

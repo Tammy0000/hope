@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class AppConfig {
@@ -18,5 +20,9 @@ public class AppConfig {
 
     public String getHost() {
         return env.getProperty("vBrowser.host");
+    }
+
+    public Long getUserId() {
+        return Long.parseLong(Objects.requireNonNull(env.getProperty("vBrowser.userId")));
     }
 }

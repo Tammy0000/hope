@@ -124,4 +124,16 @@ public class HopeProjectTwitter {
      */
     @Column(name = "is_need_2fa")
     private Boolean isNeed2fa;
+
+    /**
+     * 是否登录过
+     */
+    @Column(name = "is_login")
+    private Boolean isLogin;
+
+    /**
+     * 账号类型
+     */
+    @Column(name = "account_type")
+    private String accountType;
 }
