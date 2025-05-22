@@ -123,31 +123,7 @@ public class EdgeService implements SeleniumService {
 
     @Override
 //    @Async
-    public void updateTwitterPassword(Long userId) throws Exception {
-        List<HopeProjectTwitter> editPasswords = hopeProjectTwitterRepository.findByUserIdAndIsEditPassword(userId, false);
-        HopeProjectTwitter first = editPasswords.get(1);
-
-        ChromeLauncher.launch(9222, "C:/tmp/" + first.getTwitterAccount(), "https://x.com/?logout=1746464052695");
-//         设置远程调试端口
-        ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("debuggerAddress", "127.0.0.1:9222");
-        WebDriver driver = new ChromeDriver(options);
-        Thread.sleep(5*1000);
-        driver.findElement(By.xpath("//*[@id=\"react-root\"]/div/div/div[2]/main/div/div/div[1]/div/div/div[3]/div[4]/a/div")).click();
-        Thread.sleep(5*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[4]/label/div/div[2]/div/input")).sendKeys(first.getTwitterAccount());
-        Thread.sleep(3*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/button[2]")).click();
-        Thread.sleep(3*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input")).sendKeys(first.getTwitterSourcePassword());
-        Thread.sleep(2*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/button")).click();
-        String res = HttpRequest.get("https://2fa.fb.rip/api/otp/" + first.getTwitterSource2faPassword()).execute().body();
-        String otp = Extractor2FA.extractOtp(res);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[2]/label/div/div[2]/div/input")).sendKeys(otp);
-        Thread.sleep(2*1000);
-        driver.findElement(By.xpath("//*[@id=\"layers\"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div/div/button")).click();
-        driver.quit();
+    public void updateTwitterPassword(Long userId) {
     }
 
     @Override

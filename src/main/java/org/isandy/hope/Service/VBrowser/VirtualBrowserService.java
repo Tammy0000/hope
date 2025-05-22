@@ -53,9 +53,13 @@ public class VirtualBrowserService implements VirtualBrowser {
         HopeProjectVirtualBrowser byHost = hopeStorage.getVirtualBrowserByHost();
         Random random = new Random();
         JSONObject root = new JSONObject();
+        JSONObject launchArgs = new JSONObject();
         int anInt = random.nextInt(chromeVersion.size());
         root.put("chrome_version", chromeVersion.get(anInt));
         root.put("name", byHost.getUserId());
+        launchArgs.put("mode", 1);
+        launchArgs.put("value", "--start-maximized");
+        root.put("launchArgs", launchArgs);
         String res = HttpRequest.post(appConfig.getVirtualBrowserURI() + "/api/addBrowser")
                 .body(JSON.toJSONString(root))
                 .header("api-key", hopeStorage.getVirtualBrowserApiKey())
