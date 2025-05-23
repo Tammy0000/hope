@@ -15,6 +15,20 @@ public interface HopeProjectVBARepository extends JpaRepository<HopeProjectVirtu
      * @return 虚拟浏览器索引ID
      */
     //todo 根据浏览器ID和需要排除的账号类型查询虚拟浏览器索引ID
-    @Query(value = "select distinct (h.virtual_browser_index_id) from hope_project_virtual_browser_link_account h where h.virtual_browser_id = ?1 and not exists(select 1 from hope_project_virtual_browser_link_account h where h.account_type = ?2) fetch first ROW ONLY ", nativeQuery = true)
-    Long findVirtualBrowserIndexIdNotInAccountType  (Long virtualBrowserId, String accountType);
+    @Query(value = "select virtual_browser_index_id from hope_project_virtual_browser_link_account where user_id = ?1 and virtual_browser_id = ?2 group by virtual_browser_index_id having count(case when account_type = ?3 then 1 end ) = 0 fetch first ROW ONLY;", nativeQuery = true)
+    Long findVirtualBrowserIndexIdNotInAccountType  (Long userId, Long virtualBrowserId, String accountType);
+
+    /**
+     * @description 根据用户ID、虚拟浏览器ID和虚拟浏览器索引ID查询虚拟浏览器关联账号实体类
+     * @param userId 用户ID
+     * @param virtualBrowserId 虚拟浏览器ID
+     * @param virtualBrowserIndexId 虚拟浏览器关联索引ID
+     * @return 虚拟浏览器关联账号实体类
+     */
+    @Query("""
+            select h from HopeProjectVirtualBrowserLinkAccount h
+            where h.userId = ?1 and h.virtualBrowserId = ?2 and h.virtualBrowserIndexId = ?3""")
+    HopeProjectVirtualBrowserLinkAccount findByUserIdAndVirtualBrowserIdAndVirtualBrowserIndexId(Long userId, Long virtualBrowserId, Long virtualBrowserIndexId);
+
+
 }

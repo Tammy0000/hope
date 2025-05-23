@@ -39,5 +39,15 @@ public interface HopeProjectTwitterRepository extends JpaRepository<HopeProjectT
     @Query("select h from HopeProjectTwitter h where h.userId = ?1")
     List<HopeProjectTwitter> findByUserId(Long userId);
 
+    /**
+     * @description 根据用户id和twitter账号查询
+     * @param userId 用户id
+     * @param twitterAccount twitter账号
+     * @return HopeProjectTwitter
+     */
+    // todo 根据用户id和twitter账号查询
+    @Query("select h from HopeProjectTwitter h where h.userId = ?1 and h.twitterAccount = ?2")
+    HopeProjectTwitter findByUserIdAndTwitterAccount(Long userId, String twitterAccount);
+
 
 }

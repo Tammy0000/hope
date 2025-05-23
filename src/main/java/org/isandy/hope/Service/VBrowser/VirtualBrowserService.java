@@ -58,7 +58,7 @@ public class VirtualBrowserService implements VirtualBrowser {
         root.put("chrome_version", chromeVersion.get(anInt));
         root.put("name", byHost.getUserId());
         launchArgs.put("mode", 1);
-        launchArgs.put("value", "--start-maximized");
+        launchArgs.put("value", "--start-maximized\n--no-default-browser-check\n--disable-save-password-bubble\n--disable-translate");
         root.put("launchArgs", launchArgs);
         String res = HttpRequest.post(appConfig.getVirtualBrowserURI() + "/api/addBrowser")
                 .body(JSON.toJSONString(root))
