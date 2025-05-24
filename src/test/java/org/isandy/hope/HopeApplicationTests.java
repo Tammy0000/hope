@@ -40,9 +40,13 @@ class HopeApplicationTests {
 	@Autowired
 	TwitterSeleniumService twitterSeleniumService;
 
+	@Autowired
+	LoadFileAccount loadFileAccount;
+
 
 	@Test
-	void contextLoads() throws InterruptedException {
+	void contextLoads() {
+		loadFileAccount.loadFileTwitterAccount("C:/account/a57763.txt");
 	}
 
 }
