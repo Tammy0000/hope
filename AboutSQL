@@ -7,11 +7,29 @@ HopeUser 用于存储用户基本信息
 HopeProject 项目基本信息，以及关联到用户ID
 HopeUserProject 对用户以及项目进行关联
 HopeProjectAccount 用于对项目下的账户进行划分，也就是对项目账户进行管理
-HopeProjectLinkAccount 关联账户的基本信息，空投项目需要推特，等其他关注，或者说是其他网站
-关注才可以领取积分，所以推特这些这里统称关联账户。
-HopeProjectLinkAccountBind 这里主要用户绑定到项目上去，不同的空投项目可能都需要空投
-HopeProjectLinkAccountType 创建多个关联账户的名称以及使用
 HopeProjectCashFlow 项目收支流水情况
 HopeProjectShareRatio 项目比例分配情况
 HopeProjectAccountLog 项目日志情况
+HopeProjectVirtualBrowser 虚拟浏览器
+字段说明：
+1.bindHost，绑定本机IP地址，如果在本机使用，则使用 127.0.0.1，但是这里也会存在一个逻辑问题就是，
+如果客户有多台机在同一网段，当在数据库搜索的时候，这里匹配出来的结果就不会精准，有多个结果，并不符合逻辑，
+最合适的做法就是指定本机IP地址
+
+2. virtualBrowserId，用户所持有的唯一识别，当用户存在两台或以上，这里的值也要递增，而不是一成不变。其次就是一台服务器绑定一个 vb浏览器，后期的话还可以继续改造
+暂定方案就是上述的一台服务器绑定一个浏览器，这个字段必须要理解且知道
+
+HopeProjectVirtualBrowserLinkAccount
+虚拟浏览器关联账号情况有如下说明：
+
+1. accountType 账号类型缩写 三件套分别是 tw,dc,tg 推特 dc 小飞机，日后有新的关联账号，以此类推
+
+2. account 账号
+
+3. isProjectAccount 是否是项目账号，同一个索引号相同的浏览器，应该包含有项目账号，关联账号，三件套属于关联账号，项目账号则是撸空投的网站，这里要区分
+
+4. virtualBrowserId 这个就是上一张表的vb浏览器的ID
+
+5. virtual_browser_index_id vb浏览器索引ID，换句话来理解，就是api启动虚拟浏览器所需的ID。
+再深层去理解，项目账号，关联账号，都同属这里索引的浏览器ID。这样就方便在一个浏览器关联账号对主账号的一个转发，关注。 其他关联账号亦是如此
 

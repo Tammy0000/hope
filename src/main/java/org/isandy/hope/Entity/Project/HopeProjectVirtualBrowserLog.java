@@ -18,7 +18,7 @@ public class HopeProjectVirtualBrowserLog {
     private Long id;
 
     //  浏览器id
-    @Column(name = "browser_id")
+    @Column(name = "virtual_browser_id")
     private Long browserId;
 
     // 日志时间

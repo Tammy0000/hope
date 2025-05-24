@@ -87,7 +87,8 @@ public class Twitter implements TwitterSeleniumService {
             } catch (Exception e) {
                 log.error("登录失败");
             } finally {
-                driver.quit();
+                //使用api工具去停止浏览器
+                virtualBrowser.stopBrowser(Math.toIntExact(vb_index));
             }
         }
     }
