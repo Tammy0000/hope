@@ -45,8 +45,8 @@ class HopeApplicationTests {
 
 
 	@Test
-	void contextLoads() {
-		loadFileAccount.loadFileTwitterAccount("C:/account/a57763.txt");
+	void contextLoads() throws InterruptedException {
+		twitterSeleniumService.loginTwitter();
 	}
 
 }
