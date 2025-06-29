@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.isandy.hope.Dao.HopeProjectTwitterRepository;
 import org.isandy.hope.Dao.HopeProjectVBARepository;
+import org.isandy.hope.Dao.HopeProjectVBLRepository;
 import org.isandy.hope.Dao.HopeProjectVBRepository;
 import org.isandy.hope.Entity.Project.HopeProjectTwitter;
 import org.isandy.hope.Entity.Project.HopeProjectVirtualBrowser;
 import org.isandy.hope.Entity.Project.HopeProjectVirtualBrowserLinkAccount;
+import org.isandy.hope.Entity.Project.HopeProjectVirtualBrowserLog;
 import org.isandy.hope.Service.HopeStorage;
 import org.isandy.hope.Service.TwitterSeleniumService;
 import org.isandy.hope.Service.VirtualBrowser;
@@ -17,6 +19,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,14 +32,14 @@ public class Twitter implements TwitterSeleniumService {
 
     private final HopeProjectVBARepository hopeProjectVBARepository;
 
-    private final HopeProjectVBRepository hopeProjectVBRepository;
-
     private final VirtualBrowser  virtualBrowser;
 
     private final HopeProjectTwitterRepository hopeProjectTwitterRepository;
 
+    private final HopeProjectVBLRepository  hopeProjectVBLRepository;
+
     @Override
-    public void loginTwitter() throws InterruptedException {
+    public void loginTwitter() {
         HopeProjectVirtualBrowser byHost = hopeStorage.getVirtualBrowserByHost();
         List<HopeProjectTwitter> logins = hopeProjectTwitterRepository.findByUserIdAndIsLogin(byHost.getUserId(), false);
         if (logins.isEmpty()) {
@@ -56,21 +59,22 @@ public class Twitter implements TwitterSeleniumService {
             } else {
                 vb_index = Integer.parseInt(String.valueOf(tw));
             }
-            int port = virtualBrowser.launchBrowserId(vb_index);
-            ChromeOptions options = ChromeLauncher.createChromeOptions(port);
-            ChromeDriver driver = new ChromeDriver(options);
-            driver.get(login.getTwitterLoginWebsite());
-            Thread.sleep(10*1000);
-            driver.findElement(By.xpath("//span[text()='Sign in']")).click();
-            Thread.sleep(5*1000);
-            driver.findElement(By.xpath("//input[@name='text']")).sendKeys(login.getTwitterAccount());
-            Thread.sleep(5*1000);
-            driver.findElement(By.xpath("//button[.//span[text()='Next']]")).click();
-            Thread.sleep(5*1000);
-            driver.findElement(By.xpath("//input[@name='password']")).sendKeys(login.getTwitterSourcePassword());
-            driver.findElement(By.xpath("//button[.//span[text()='Log in']]")).click();
-            Thread.sleep(8*1000);
+            ChromeDriver driver = null;
             try {
+                int port = virtualBrowser.launchBrowserId(vb_index);
+                ChromeOptions options = ChromeLauncher.createChromeOptions(port);
+                driver = new ChromeDriver(options);
+                driver.get(login.getTwitterLoginWebsite());
+                Thread.sleep(10*1000);
+                driver.findElement(By.xpath("//span[text()='Sign in']")).click();
+                Thread.sleep(5*1000);
+                driver.findElement(By.xpath("//input[@name='text']")).sendKeys(login.getTwitterAccount());
+                Thread.sleep(5*1000);
+                driver.findElement(By.xpath("//button[.//span[text()='Next']]")).click();
+                Thread.sleep(5*1000);
+                driver.findElement(By.xpath("//input[@name='password']")).sendKeys(login.getTwitterSourcePassword());
+                driver.findElement(By.xpath("//button[.//span[text()='Log in']]")).click();
+                Thread.sleep(8*1000);
                 // 登录成功后，在主页右下角有一个Grok按钮，如果存在点击无报错则代表登录成功
                 driver.findElement(By.xpath("//button[contains(@class, 'r-6koalj') and contains(@class, 'r-1ny4l3l')]")).click();
                 log.info("登录成功: {}", login.getTwitterAccount());
@@ -84,9 +88,28 @@ public class Twitter implements TwitterSeleniumService {
                 HopeProjectTwitter twitterAccount = hopeProjectTwitterRepository.findByUserIdAndTwitterAccount(userId, login.getTwitterAccount());
                 twitterAccount.setIsLogin(true);
                 hopeProjectTwitterRepository.save(twitterAccount);
+                //保存日志
+                HopeProjectVirtualBrowserLog log = new HopeProjectVirtualBrowserLog();
+                log.setAccount(login.getTwitterAccount())
+                        .setAccountType("tw")
+                        .setBrowserId(virtualBrowserId)
+                        .setCreateTime(LocalDateTime.now())
+                        .setLog("登录成功")
+                        .setStatus(true);
+                hopeProjectVBLRepository.save(log);
             } catch (Exception e) {
-                log.error("登录失败");
+                log.error("登录失败:{}", e.getMessage());
+                HopeProjectVirtualBrowserLog log = new HopeProjectVirtualBrowserLog();
+                log.setAccount(login.getTwitterAccount())
+                        .setAccountType("tw")
+                        .setBrowserId(virtualBrowserId)
+                        .setCreateTime(LocalDateTime.now())
+                        .setLog(e.getMessage())
+                        .setStatus(false);
+                hopeProjectVBLRepository.save(log);
             } finally {
+                // 经测试，这里必须要退出浏览器，否则会报错，提示Connection reset
+                driver.quit();
                 //使用api工具去停止浏览器
                 virtualBrowser.stopBrowser(Math.toIntExact(vb_index));
             }
