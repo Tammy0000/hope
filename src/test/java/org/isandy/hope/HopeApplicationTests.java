@@ -5,6 +5,7 @@ import org.isandy.hope.Dao.HopeProjectVBARepository;
 import org.isandy.hope.Dao.HopeProjectVBRepository;
 import org.isandy.hope.Dao.MnemonicRepository;
 import org.isandy.hope.Service.*;
+import org.isandy.hope.Utils.ChromeLauncher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,8 +46,10 @@ class HopeApplicationTests {
 
 
 	@Test
-	void contextLoads() {
-		loadFileAccount.loadFileTwitterAccount("C:/account/a57763.txt");
+	void contextLoads() throws Exception {
+		int launch = ChromeLauncher.launch("C:/tmp/source/zhangyi", "https://www.google.com");
+		Thread.sleep(5000);
+		ChromeLauncher.closeChromeByDebugPort(launch);
 	}
 
 }
